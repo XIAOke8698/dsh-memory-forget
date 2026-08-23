@@ -5,6 +5,18 @@
   "type": "module",
   "license": "MIT",
   "author": "XIAOke8698",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XIAOke8698/dsh-memory-forget.git"
+  },
+  "homepage": "https://github.com/XIAOke8698/dsh-memory-forget",
+  "bugs": {
+    "url": "https://github.com/XIAOke8698/dsh-memory-forget/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
   "keywords": [
     "memory",
     "forgetting",
@@ -20,6 +32,7 @@
   ],
   "files": [
     "dist",
+    "docs",
     "README.md",
     "LICENSE"
   ],
