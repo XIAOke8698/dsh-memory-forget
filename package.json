@@ -1,0 +1,43 @@
+{
+  "name": "@xiaoke8698/dsh-memory-forget",
+  "version": "0.1.0",
+  "description": "Forgetting engine for AI agents — memory TTL, decay, eviction, audit. The opposite of memory programming.",
+  "type": "module",
+  "license": "MIT",
+  "author": "XIAOke8698",
+  "keywords": [
+    "memory",
+    "forgetting",
+    "agent-memory",
+    "llm-agents",
+    "ai-agents",
+    "memory-management",
+    "memory-eviction",
+    "amnesia",
+    "deepseek",
+    "context-management",
+    "privacy"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}
