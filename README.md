@@ -144,12 +144,14 @@ Current release **v0.1.0 ships the core engine only** (`AmnesiaEngine`: bus / de
   - [ ] M1.6 acceptance (DoD 1-5; DoD 5 sub-agent auto-unplug pending real-subagent test)
 - [ ] **M2 Client UI** — composer readout / memory-node view (draggable unplug) / settings
 - [ ] **M3 Three-arm benchmark** — cumulative tokens, success rate, stale-error rate
-- [ ] **M4 skill + local CLI distribution** — cross-agent (Claude Code / Codex / DSH), zero server
+- [ ] **M4 DSH official bundle + skill/CLI** — `dsh plugin add` installs the DSH plugin (official bundle mechanism); skill + CLI for other agents
 - [ ] **M5 Value-add** — `/amnesia` command, auto-suggestion (opt-in), deeper visualization
 - [ ] **M6 MCP server (far future, no commitment)**
 - [ ] Open questions: Q1 forgetting aggressiveness / Q2 auto-extraction / Q3 semantic retrieval / Q4 target users / Q5 benchmark task set / Q6 distribution shape
 
 ## Integration with other agents
+
+**DSH users (planned, M4): official bundle** — once shipped, install with one command: `dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget` (official DSH bundle mechanism: npm package + `dsh.bundle` + `cordis.patch.yml`; see DSH docs `docs/user/develop/basic/publish.md`).
 
 **Planned: skill + local CLI (M4)** — one `SKILL.md` (Anthropic Agent Skills format, shared by Claude Code / Codex / DSH) + a local CLI: copy-and-use, no network, no background process. Claude Code: `~/.claude/skills/dsh-memory-forget/`; DSH: skills dir; Codex: skills / AGENTS.md.
 

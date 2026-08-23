@@ -452,9 +452,9 @@ function settleStrength(item, now) {
 **DoD**：三臂全部跑通；在"记忆有害组"上产出 C 显著优于 B 的报告；报告附方法论与任务集。
 **依赖**：M1（引擎是基准中被测物）。
 
-### M4 —— 跨 Agent 分发（skill + 本地 CLI）
-**内容**：包内 `SKILL.md`（Anthropic Agent Skills 格式，frontmatter name/description）+ `dsh-memory-forget` CLI bin（与 Cordis 插件共享 core）。**无服务端、无网络依赖**：用户把 skill 目录复制到目标 Agent 的 skills 目录即可。
-**DoD**：Claude Code / Codex / DSH 各装同一份 skill + CLI，跑通 remember → 过期 → status 闭环；全程无后台进程。
+### M4 —— DSH 官方 bundle + 跨 Agent 分发
+**内容**：包内加 `dsh.bundle` manifest（`{patch: "./cordis.patch.yml"}`）+ `cordis.patch.yml`（insert 插件行）+ 正式 Cordis 插件适配层（工具 + 钩子 + 注入，port 自 M1 验证逻辑）。DSH 用户一条命令安装：`dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget`（官方 bundle 机制，见 DSH 文档 `docs/user/develop/basic/publish.md`）。skill + CLI 随后交付（其他 Agent 用）。
+**DoD**：`dsh plugin add` 后 profile 启动即出现 amnesia 工具与注入；`--dump-config` 可见本 bundle 层；用户 patch 可覆盖其 config（层序语义）。
 
 ### M5 —— 增值（可选，独立评审）
 **内容**：`/amnesia` 人类命令；自动建议（opt-in，仍不自动写入）；记忆节点可视化面板深化（§7 之外的全屏视图）。
@@ -463,7 +463,7 @@ function settleStrength(item, now) {
 **内容**：MCP server（`dsh-memory-forget-mcp` bin）。延后理由：MCP 需要服务端进程，"谁来托管、如何保活"是运维负担；本地 skill+CLI 已覆盖跨 Agent 诉求。届时再定存储与托管（Q6）。
 
 ### 演进路径
-设计稿（本文）→ M1 以动态 Cordis 插件验证引擎 → 落正式包 `@deepseek-ai/dsh-memory-forget` 进 `packages/`（README + invariant + snapshot 测试，遵守仓库发布规范），包内导出 core + Cordis 插件 + skill 包 + CLI bin → 单仓库发布（MCP 远期，见 Q6）。
+设计稿（本文）→ M1 以动态 Cordis 插件验证引擎 → 已发布 v0.1.0（core 库，npm）→ M4 加 `dsh.bundle` 正式插件适配层（官方 bundle 机制，`dsh plugin add` 安装）→ skill + CLI（其他 Agent）→ 单仓库发布（MCP 远期，见 Q6）。
 
 ---
 
@@ -491,7 +491,7 @@ GitHub 检索机制下的命名决策（参考 [GitHub 仓库搜索文档](https
 | 形态 | 交付物 | 面向 | 说明 |
 |---|---|---|---|
 | core | 包内 `src/core` 导出 | 开发者 | 逻辑真源：MemoryItem 模型、衰减、淘汰、注入选择 |
-| `@deepseek-ai/dsh-memory-forget`（Cordis 插件） | npm 包默认导出 | DSH 用户（pnpm add） | 原生集成：`system-prompt/assemble` 注入（会话日志合规）、`agent/turn-stopping` 衰减、Client UI、YAML 配置 |
+| `@xiaoke8698/dsh-memory-forget`（Cordis 插件 = DSH bundle） | npm 包 + `dsh.bundle` + `cordis.patch.yml` | DSH 用户（`dsh plugin add`） | 官方 bundle 机制：插件行插入 profile 组合，工具/钩子/注入/Config 全挂载；用户 patch 可覆盖（§10.4） |
 | skill 包（`SKILL.md` + CLI bin） | 目录：SKILL.md + bin | Claude Code / Codex / DSH 等任何 Agent | **指令层（skill）+ 执行层（CLI）本地组合**，复制即用，无服务端（§10.3） |
 | `dsh-memory-forget`（bin） | CLI | 脚本 / CI | `dsh-memory-forget status`、`dsh-memory-forget audit --project X`、`dsh-memory-forget forget --all`；skill 与脚本共用 |
 | `dsh-memory-forget-mcp`（bin，远期） | MCP stdio server | 延后（M6） | 需要服务端托管，暂不承诺；届时再定存储与托管 |
@@ -525,9 +525,18 @@ GitHub 检索机制下的命名决策（参考 [GitHub 仓库搜索文档](https
 
 ---
 
-## 11. 验证与基准（数据对比）
+### 10.4 DSH 官方 bundle（插件分发机制）
 
-**为什么必要**：记忆类产品的宣传全是"记忆让 Agent 更好"；本插件的主张恰恰相反——**不加治理的记忆会让 Agent 随时间变差**（陈旧、污染、上下文膨胀）。没有数据，这个主张只是口号。**基准是产品的一部分，不是事后验证。**
+DSH 的官方第三方插件分发 = **bundle**：一个声明 `dsh.bundle` 的 npm 包（含 `cordis.patch.yml` 配置层 + 插件代码），用户经 `dsh plugin --profile <name> add <包>` 安装进 profile 组合（见 DSH 文档 `docs/user/develop/basic/publish.md`）。
+
+- **安装**：`dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget`（发 npm 带构建产物即可；git 直装需 `prepare` 脚本 + 用户放行构建）。
+- **层序**：profile bundles 按序 → 用户 `cordis.patch.yml` → 首页级 → `--patch`；后层按 id **整行替换** config（不深合并）——本插件默认值保持保守，用户可覆盖。
+- **插件入口**：`export const name` + `export function apply`（Cordis 函数插件），patch 行 `name` 引用 npm 包名。
+- **与核心库的关系**：同一 npm 包可以既是库（导出 core）又是 bundle（声明 `dsh.bundle`）——`dsh plugin add` 激活插件层，普通 `npm install` 时只是库。
+
+---
+
+## 11. 验证与基准（数据对比）**为什么必要**：记忆类产品的宣传全是"记忆让 Agent 更好"；本插件的主张恰恰相反——**不加治理的记忆会让 Agent 随时间变差**（陈旧、污染、上下文膨胀）。没有数据，这个主张只是口号。**基准是产品的一部分，不是事后验证。**
 
 ### 11.1 实验设计（三臂对照）
 
