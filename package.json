@@ -7,7 +7,7 @@
   "author": "XIAOke8698",
   "repository": {
     "type": "git",
-    "url": "https://github.com/XIAOke8698/dsh-memory-forget.git"
+    "url": "git+https://github.com/XIAOke8698/dsh-memory-forget.git"
   },
   "homepage": "https://github.com/XIAOke8698/dsh-memory-forget",
   "bugs": {
