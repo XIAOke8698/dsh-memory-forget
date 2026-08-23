@@ -1,0 +1,12 @@
+# dsh-memory-forget — official DSH bundle layer.
+#
+# Installed into a profile with:  dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget
+# Tunables come from the plugin defaults; override per row by id in your own
+# cordis.patch.yml (later layers replace the whole config value).
+# Config keys (all optional):
+#   defaultTtlMs, staleStrength, forgottenStrength, maxItemBytes, maxStoreBytes,
+#   maxInjectedTokens, restorable (default false = privacy), promoteAfterAccesses,
+#   storeFile
+- insert:
+    - id: dsh-memory-forget
+      name: '@xiaoke8698/dsh-memory-forget/plugin'

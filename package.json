@@ -1,6 +1,6 @@
 {
   "name": "@xiaoke8698/dsh-memory-forget",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Forgetting engine for AI agents — memory TTL, decay, eviction, audit. The opposite of memory programming.",
   "type": "module",
   "license": "MIT",
@@ -32,7 +32,9 @@
   ],
   "files": [
     "dist",
+    "plugin",
     "docs",
+    "cordis.patch.yml",
     "README.md",
     "README.zh.md",
     "LICENSE"
@@ -41,6 +43,14 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./plugin": {
+      "import": "./plugin/index.js"
+    }
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
     }
   },
   "engines": {
@@ -49,6 +59,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
