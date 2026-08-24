@@ -17,6 +17,9 @@ import { AmnesiaEngine } from '../dist/index.js'
 
 export const name = 'dsh-memory-forget'
 
+/** The tools registry is a hard dependency: Cordis waits for it before apply. */
+export const inject = ['tools']
+
 const DEFAULTS = {
   defaultTtlMs: 30 * 24 * 60 * 60 * 1000,
   staleStrength: 0.3,
@@ -131,11 +134,9 @@ export function apply(ctx, config = {}) {
     }
   })
 
-  // ---------- tools (raw ToolDefinitions) ----------
-  const tools = ctx.get('tools')
-  if (tools) {
-    const text = (s) => [{ type: 'text', text: String(s) }]
-    const define = (def) => tools.register(def)
+  // ---------- tools (raw ToolDefinitions via ctx.tools.register) ----------
+  const text = (s) => [{ type: 'text', text: String(s) }]
+  const define = (def) => ctx.tools.register(def)
 
     define({
       name: 'amnesia_remember',
@@ -274,8 +275,5 @@ export function apply(ctx, config = {}) {
       execute: (args) => ({ entries: engine.auditView(args.limit) }),
     })
 
-    console.log('[amnesia] dsh-memory-forget plugin mounted; tools registered:', tools ? '7' : '0')
-  } else {
-    console.warn('[amnesia] tools service unavailable; memory tools not registered')
-  }
+    console.log('[amnesia] dsh-memory-forget plugin mounted; tools registered: 7')
 }
