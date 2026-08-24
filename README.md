@@ -132,7 +132,7 @@ Metrics: cumulative context tokens, task success rate, **stale-error rate** (a w
 
 ## Roadmap
 
-Current release **v0.1.0 ships the core engine only** (`AmnesiaEngine`: bus / decay / audit / selection). Not included yet: DSH Cordis plugin adapter, CLI, skill, MCP server, Client UI, benchmark results.
+Current release **v0.2.1 ships the core engine + the DSH official bundle** (`AmnesiaEngine` + Cordis plugin adapter). Not included yet: CLI, skill, MCP server, Client UI, benchmark results.
 
 - [x] **M0 Design** — positioning, architecture, milestones ([docs/design.md](docs/design.md))
 - [x] **M1 Dynamic-plugin validation** (session-scoped DSH plugin, `memf-1`)
@@ -144,20 +144,33 @@ Current release **v0.1.0 ships the core engine only** (`AmnesiaEngine`: bus / de
   - [ ] M1.6 acceptance (DoD 1-5; DoD 5 sub-agent auto-unplug pending real-subagent test)
 - [ ] **M2 Client UI** — composer readout / memory-node view (draggable unplug) / settings
 - [ ] **M3 Three-arm benchmark** — cumulative tokens, success rate, stale-error rate
-- [ ] **M4 DSH official bundle + skill/CLI** — `dsh plugin add` installs the DSH plugin (official bundle mechanism); skill + CLI for other agents
+- [x] **M4 DSH official bundle** — shipped in 0.2.1; install with `dsh plugin add` (official bundle mechanism)
+- [ ] **M4b skill + local CLI** — for other agents (Claude Code / Codex / DSH), zero server
 - [ ] **M5 Value-add** — `/amnesia` command, auto-suggestion (opt-in), deeper visualization
 - [ ] **M6 MCP server (far future, no commitment)**
 - [ ] Open questions: Q1 forgetting aggressiveness / Q2 auto-extraction / Q3 semantic retrieval / Q4 target users / Q5 benchmark task set / Q6 distribution shape
 
 ## Integration with other agents
 
-**DSH users (planned, M4): official bundle** — once shipped, install with one command: `dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget` (official DSH bundle mechanism: npm package + `dsh.bundle` + `cordis.patch.yml`; see DSH docs `docs/user/develop/basic/publish.md`).
+**DSH users: official bundle (shipped in 0.2.1)** — install with one command:
+
+```sh
+dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget
+```
+
+If your npm registry mirror lags behind npmjs.org, pin the version and the official registry:
+
+```sh
+dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget@0.2.1 --registry=https://registry.npmjs.org/
+```
+
+(Official bundle mechanism: npm package + `dsh.bundle` + `cordis.patch.yml`; see DSH docs `docs/user/develop/basic/publish.md`.)
 
 **Planned: skill + local CLI (M4)** — one `SKILL.md` (Anthropic Agent Skills format, shared by Claude Code / Codex / DSH) + a local CLI: copy-and-use, no network, no background process. Claude Code: `~/.claude/skills/dsh-memory-forget/`; DSH: skills dir; Codex: skills / AGENTS.md.
 
 **Far future: MCP server (M6)** — needs server hosting; not committed.
 
-> Status: skill / CLI are not shipped yet. Today the npm package is the core engine; the DSH dynamic plugin is the session-scoped validation form.
+> Status: skill / CLI are not shipped yet. Today the npm package is the core engine + DSH official bundle; the DSH dynamic plugin was the session-scoped validation form.
 
 ## Docs & Research
 

@@ -96,20 +96,32 @@ console.log(memory.preview())
 
 ## 路线图
 
-**v0.1.0 只包含核心引擎**（`AmnesiaEngine`：总线/衰减/审计/选择）。未包含：DSH Cordis 插件适配层、CLI、skill、MCP server、Client UI、基准结果。
+**v0.2.1 包含核心引擎 + DSH 官方 bundle**（`AmnesiaEngine` + Cordis 插件适配层）。未包含：CLI、skill、MCP server、Client UI、基准结果。
 
 - [x] M0 设计定稿
 - [x] M1 动态插件验证（DSH 会话级）
   - [x] M1.1 核心引擎　[x] M1.2 服务与存储　[x] M1.3 工具面（7 工具）
   - [x] M1.4 生命周期钩子　[x] M1.5 注入与预算　[ ] M1.6 验收（子 Agent 自动拔出待实测）
-- [ ] M2 Client UI　[ ] **M3 三臂基准**　[ ] **M4 DSH 官方 bundle + skill/CLI 分发**　[ ] M5 增值　[ ] M6 MCP server（远期）
+- [ ] M2 Client UI　[ ] **M3 三臂基准**　[ ] **M4 DSH 官方 bundle（已发 0.2.1）**　[ ] **M4b skill + 本地 CLI**　[ ] M5 增值　[ ] M6 MCP server（远期）
 - [ ] 开放问题：Q1 遗忘激进度 / Q2 自动抽取 / Q3 语义检索 / Q4 目标用户 / Q5 基准任务集 / Q6 分发形态
 
 ## 其他 Agent 整合
 
-**DSH 用户（规划中 M4）：官方 bundle**——一条命令安装：`dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget`（官方 bundle 机制：npm 包 + `dsh.bundle` + `cordis.patch.yml`，见 DSH 文档 `docs/user/develop/basic/publish.md`）。
+**DSH 用户：官方 bundle（已发布 0.2.1）**——一条命令安装：
 
-**规划中（M4）**：skill + 本地 CLI（SKILL.md 复制即用，零服务端）。**远期（M6）**：MCP server（需服务端托管，不做承诺）。当前 npm 包只是核心引擎；DSH 动态插件是会话级验证形态。
+```sh
+dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget
+```
+
+如果 npm 镜像源还没同步（会解析到旧版），pin 版本 + 官方源：
+
+```sh
+dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget@0.2.1 --registry=https://registry.npmjs.org/
+```
+
+（官方 bundle 机制：npm 包 + `dsh.bundle` + `cordis.patch.yml`，见 DSH 文档 `docs/user/develop/basic/publish.md`。）
+
+**规划中（M4b）**：skill + 本地 CLI（SKILL.md 复制即用，零服务端）。**远期（M6）**：MCP server（需服务端托管，不做承诺）。当前 npm 包 = 核心引擎 + DSH 官方 bundle；DSH 动态插件是会话级验证形态。
 
 ## 文档与相关研究
 
