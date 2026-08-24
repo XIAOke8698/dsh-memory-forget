@@ -1,6 +1,6 @@
 {
   "name": "@xiaoke8698/dsh-memory-forget",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Forgetting engine for AI agents — memory TTL, decay, eviction, audit. The opposite of memory programming.",
   "type": "module",
   "license": "MIT",
