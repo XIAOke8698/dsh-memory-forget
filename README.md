@@ -14,13 +14,15 @@ This is not contrarianism — there is evidence: [agents get dumber with use, me
 
 ---
 
-## Install
+## Install (DSH plugin — official bundle)
 
 ```sh
-npm install @xiaoke8698/dsh-memory-forget
+dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget
 ```
 
-Node >= 20, zero dependencies, ESM.
+Uninstall: `dsh plugin --profile <name> remove @xiaoke8698/dsh-memory-forget` (memories stay in the workspace file `.dsh-memory-forget/store.json`; delete that directory to wipe them).
+
+For developers using the engine as a library: `npm install @xiaoke8698/dsh-memory-forget` (Node >= 20, zero dependencies, ESM).
 
 ## Usage
 
@@ -152,27 +154,7 @@ Current release **v0.2.1 ships the core engine + the DSH official bundle** (`Amn
 
 ## Integration with other agents
 
-**DSH users: official bundle (shipped in 0.2.1)** — install with one command:
-
-```sh
-dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget
-```
-
-If your npm registry mirror lags behind npmjs.org, pin the version and the official registry:
-
-```sh
-dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget@0.2.1 --registry=https://registry.npmjs.org/
-```
-
-(Official bundle mechanism: npm package + `dsh.bundle` + `cordis.patch.yml`; see DSH docs `docs/user/develop/basic/publish.md`.)
-
-**Uninstall** — remove the plugin from a profile (removes both the dependency and its layer):
-
-```sh
-dsh plugin --profile <name> remove @xiaoke8698/dsh-memory-forget
-```
-
-Memories live in the workspace at `.dsh-memory-forget/store.json` (default). Removing the plugin does not delete that file — delete the `.dsh-memory-forget/` directory to wipe all memories and audit copies (privacy).
+**DSH users** — installed via the official bundle mechanism (see Install above; `dsh.bundle` + `cordis.patch.yml`, DSH docs `docs/user/develop/basic/publish.md`).
 
 **Planned: skill + local CLI (M4b)** — one `SKILL.md` (Anthropic Agent Skills format, shared by Claude Code / Codex / DSH) + a local CLI: copy-and-use, no network, no background process. Claude Code: `~/.claude/skills/dsh-memory-forget/`; DSH: skills dir; Codex: skills / AGENTS.md.
 
