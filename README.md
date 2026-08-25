@@ -166,7 +166,15 @@ dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget@0.2.1 --registry=h
 
 (Official bundle mechanism: npm package + `dsh.bundle` + `cordis.patch.yml`; see DSH docs `docs/user/develop/basic/publish.md`.)
 
-**Planned: skill + local CLI (M4)** — one `SKILL.md` (Anthropic Agent Skills format, shared by Claude Code / Codex / DSH) + a local CLI: copy-and-use, no network, no background process. Claude Code: `~/.claude/skills/dsh-memory-forget/`; DSH: skills dir; Codex: skills / AGENTS.md.
+**Uninstall** — remove the plugin from a profile (removes both the dependency and its layer):
+
+```sh
+dsh plugin --profile <name> remove @xiaoke8698/dsh-memory-forget
+```
+
+Memories live in the workspace at `.dsh-memory-forget/store.json` (default). Removing the plugin does not delete that file — delete the `.dsh-memory-forget/` directory to wipe all memories and audit copies (privacy).
+
+**Planned: skill + local CLI (M4b)** — one `SKILL.md` (Anthropic Agent Skills format, shared by Claude Code / Codex / DSH) + a local CLI: copy-and-use, no network, no background process. Claude Code: `~/.claude/skills/dsh-memory-forget/`; DSH: skills dir; Codex: skills / AGENTS.md.
 
 **Far future: MCP server (M6)** — needs server hosting; not committed.
 

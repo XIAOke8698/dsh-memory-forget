@@ -121,6 +121,14 @@ dsh plugin --profile <name> add @xiaoke8698/dsh-memory-forget@0.2.1 --registry=h
 
 （官方 bundle 机制：npm 包 + `dsh.bundle` + `cordis.patch.yml`，见 DSH 文档 `docs/user/develop/basic/publish.md`。）
 
+**卸载**——从 profile 移除插件（同时移除依赖与配置层）：
+
+```sh
+dsh plugin --profile <name> remove @xiaoke8698/dsh-memory-forget
+```
+
+记忆存储在 workspace 的 `.dsh-memory-forget/store.json`（默认）。移除插件**不会**删除该文件——要彻底清空记忆与审计副本（隐私），删除 `.dsh-memory-forget/` 目录即可。
+
 **规划中（M4b）**：skill + 本地 CLI（SKILL.md 复制即用，零服务端）。**远期（M6）**：MCP server（需服务端托管，不做承诺）。当前 npm 包 = 核心引擎 + DSH 官方 bundle；DSH 动态插件是会话级验证形态。
 
 ## 文档与相关研究
